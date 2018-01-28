@@ -20,7 +20,14 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 
     private static final String TAG = "MainActivity";
 
-    private final String APPFLINGER_HOST_BASE_URL = "http://192.168.1.182:8080"; // 10.0.2.2:8080
+    // The base URL of the Appflinger host server
+    private final String APPFLINGER_HOST_BASE_URL = "http://192.168.1.182:8080";
+
+    // We use a specific session id so that running this when a session already exists will just
+    // reconnect to the same session - this is convenient when developing/testing
+    private final String APPFLINGER_SESSION_ID = "android";
+
+    // The web page which the cloud browser will open
     private final String WEB_PAGE = "https://youtube.com/tv";
 
     private AppflingerSession session;
@@ -55,8 +62,8 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     }
 
     private void createSession() {
-        session = AppflingerClient.getInstance().startSession(
-                APPFLINGER_HOST_BASE_URL, WEB_PAGE, new AppflingerSessionListener());
+        session = AppflingerClient.getInstance().startSession(APPFLINGER_HOST_BASE_URL,
+                APPFLINGER_SESSION_ID, WEB_PAGE, new AppflingerSessionListener());
         if (session == null) {
             // TODO render something on the screen to notify end-user
             return;
