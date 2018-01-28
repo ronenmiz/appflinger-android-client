@@ -1,0 +1,15 @@
+allprojects {
+    repositories {
+        jcenter()
+        flatDir {
+            dirs 'src/main/libs'
+        }
+        google()
+    }
+}
+
+buildscript {
+    repositories {
+        google()
+    }
+}
