@@ -3,6 +3,8 @@ package com.tversity.appflinger.android.demo;
 import android.app.Activity;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -77,6 +79,14 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        return true;
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent key) {
+        if (session != null) {
+            session.sendKeyEvent(key);
+        }
         return true;
     }
 
