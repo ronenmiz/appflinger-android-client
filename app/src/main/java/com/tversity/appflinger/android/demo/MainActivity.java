@@ -56,7 +56,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 
     private void createSession() {
         session = AppflingerClient.getInstance().startSession(
-                APPFLINGER_HOST_BASE_URL, WEB_PAGE);
+                APPFLINGER_HOST_BASE_URL, WEB_PAGE, new AppflingerSessionListener());
         if (session == null) {
             // TODO render something on the screen to notify end-user
             return;
@@ -90,6 +90,34 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         return true;
     }
 
+    // Appflinger session listener
+    class AppflingerSessionListener implements AppflingerSession.Listener {
+        public AppflingerSessionListener() {
+
+        }
+
+        public String onReceivedMessage(String message) {
+            Log.i(TAG, "Received message: " + message);
+            return "Got it";
+        }
+
+        public void onAddressBarChanged(String url) {
+            Log.i(TAG, "onAddressBarChanged: " + url);
+        }
+
+        public void onPageClose() throws Exception {
+            Log.i(TAG, "onPageClose");
+        }
+
+        public void onPageLoad() throws Exception {
+            Log.i(TAG, "onPageLoad");
+        }
+
+        public void onTitleChanged(String title) {
+            Log.i(TAG, "onAddressBarChanged: " + title);
+        }
+    }
+
     // Surface Texture Listener
 
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
@@ -98,7 +126,6 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     }
 
     public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-
     }
 
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
@@ -107,6 +134,5 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     }
 
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-
     }
 }
