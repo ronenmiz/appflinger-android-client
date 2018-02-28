@@ -129,7 +129,9 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
         mAttribView.setVisibility(View.VISIBLE);
-        session.startUIRendering(new Surface(mPlaybackView.getSurfaceTexture()));
+        if (session != null) {
+            session.startUIRendering(new Surface(mPlaybackView.getSurfaceTexture()));
+        }
     }
 
     public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
