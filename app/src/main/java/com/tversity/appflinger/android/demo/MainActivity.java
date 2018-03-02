@@ -5,9 +5,6 @@ import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
@@ -48,13 +45,6 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.action_menu, menu);
-        return true;
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         if (session != null) {
@@ -85,11 +75,6 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     protected void onResume() {
         super.onResume();
         createSession();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return true;
     }
 
     @Override
