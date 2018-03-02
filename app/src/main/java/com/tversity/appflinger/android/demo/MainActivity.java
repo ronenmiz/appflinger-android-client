@@ -33,6 +33,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     private AppflingerSession session;
     private TextureView mPlaybackView;
     private TextView mAttribView;
+    private boolean isUIRendering = false;
 
     /**
      * Called when the activity is first created.
@@ -43,6 +44,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         setContentView(R.layout.sample_main);
         mPlaybackView = (TextureView) findViewById(R.id.PlaybackView);
         mAttribView =  (TextView)findViewById(R.id.AttribView);
+        mPlaybackView.setSurfaceTextureListener(this);
     }
 
     @Override
@@ -58,6 +60,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         if (session != null) {
             session.stop();
             session = null;
+            isUIRendering = false;
         }
     }
 
@@ -71,10 +74,10 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 
         if (mPlaybackView.isAvailable()) {
             mAttribView.setVisibility(View.VISIBLE);
+            isUIRendering = true;
             session.startUIRendering(new Surface(mPlaybackView.getSurfaceTexture()));
         } else {
             // We will start ui rendering later when onSurfaceTextureAvailable is invoked
-            mPlaybackView.setSurfaceTextureListener(this);
         }
     }
 
@@ -128,8 +131,9 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     // Surface Texture Listener
 
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        mAttribView.setVisibility(View.VISIBLE);
-        if (session != null) {
+        if (session != null && !isUIRendering) {
+            mAttribView.setVisibility(View.VISIBLE);
+            isUIRendering = true;
             session.startUIRendering(new Surface(mPlaybackView.getSurfaceTexture()));
         }
     }
@@ -138,7 +142,10 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     }
 
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-        // TODO release relevant resources
+        if (session != null && isUIRendering) {
+            isUIRendering = false;
+            session.stopUIRendering();
+        }
         return true;
     }
 
