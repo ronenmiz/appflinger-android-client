@@ -64,8 +64,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 
         if (mPlaybackView.isAvailable()) {
             mAttribView.setVisibility(View.VISIBLE);
-            isUIRendering = true;
-            session.startUIRendering(new Surface(mPlaybackView.getSurfaceTexture()));
+            isUIRendering = session.startUIRendering(new Surface(mPlaybackView.getSurfaceTexture()));
         } else {
             // We will start ui rendering later when onSurfaceTextureAvailable is invoked
         }
@@ -82,6 +81,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
         if (session != null) {
             session.sendKeyEvent(key);
         }
+
         return true;
     }
 
@@ -118,8 +118,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
         if (session != null && !isUIRendering) {
             mAttribView.setVisibility(View.VISIBLE);
-            isUIRendering = true;
-            session.startUIRendering(new Surface(mPlaybackView.getSurfaceTexture()));
+            isUIRendering = session.startUIRendering(new Surface(mPlaybackView.getSurfaceTexture()));
         }
     }
 
@@ -128,8 +127,7 @@ public class MainActivity extends Activity implements TextureView.SurfaceTexture
 
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
         if (session != null && isUIRendering) {
-            isUIRendering = false;
-            session.stopUIRendering();
+            isUIRendering = session.stopUIRendering();
         }
         return true;
     }
